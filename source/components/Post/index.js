@@ -1,11 +1,18 @@
 // Core
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 // Instruments
 import Styles from './styles.m.css';
 
 export class Post extends Component {
+    static propTypes = {
+        avatar:               PropTypes.string,
+        currentUserFirstName: PropTypes.string,
+        currentUserLastName:  PropTypes.string,
+    }
+
     render() {
         const {
             avatar,
