@@ -12,7 +12,7 @@ import Styles from './styles.m.css';
 export class Post extends Component {
     static propTypes = {
         comment: PropTypes.string.isRequired,
-        created: PropTypes.number.isRequired,
+        created: PropTypes.object.isRequired,
     };
 
     render() {
