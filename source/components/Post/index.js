@@ -11,13 +11,26 @@ import Styles from './styles.m.css';
 
 export class Post extends Component {
     static propTypes = {
+        id:          PropTypes.string.isRequired,
         comment:     PropTypes.string.isRequired,
         created:     PropTypes.object.isRequired,
         _deletePost: PropTypes.func.isRequired,
     };
 
+    constructor() {
+        super();
+
+        this._handleDelete = this._handleDelete.bind(this);
+    }
+
+    _handleDelete() {
+        const { id, _deletePost } = this.props;
+
+        _deletePost(id);
+    }
+
     render() {
-        const { comment, created, _deletePost } = this.props;
+        const { comment, created } = this.props;
 
         return (
             <Consumer>
@@ -32,7 +45,7 @@ export class Post extends Component {
                         <p>{ comment }</p>
                         <button
                             className = 'cross'
-                            onClick = { _deletePost }
+                            onClick = { this._handleDelete }
                         />
                     </section>
                 )}
