@@ -11,12 +11,13 @@ import Styles from './styles.m.css';
 
 export class Post extends Component {
     static propTypes = {
-        comment: PropTypes.string.isRequired,
-        created: PropTypes.object.isRequired,
+        comment:     PropTypes.string.isRequired,
+        created:     PropTypes.object.isRequired,
+        _deletePost: PropTypes.func.isRequired,
     };
 
     render() {
-        const { comment, created } = this.props;
+        const { comment, created, _deletePost } = this.props;
 
         return (
             <Consumer>
@@ -29,6 +30,10 @@ export class Post extends Component {
                         </a>
                         <time>{moment.unix(created).format('MMMM D h:mm:ss a')}</time>
                         <p>{ comment }</p>
+                        <button
+                            className = 'cross'
+                            onClick = { _deletePost }
+                        />
                     </section>
                 )}
             </Consumer>
