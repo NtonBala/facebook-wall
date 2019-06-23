@@ -3,13 +3,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import { Consumer } from 'components/HOC/withProfile';
+import { withProfile } from 'components/HOC/withProfile';
+
 // Instruments
 import Styles from './styles.m.css';
 
+@withProfile
 export class Composer extends Component {
     static propTypes = {
-        _createPost: PropTypes.func.isRequired,
+        _createPost:          PropTypes.func.isRequired,
+        avatar:               PropTypes.string.isRequired,
+        currentUserFirstName: PropTypes.string.isRequired,
     };
 
     state = {
@@ -52,29 +56,26 @@ export class Composer extends Component {
 
     render() {
         const { comment } = this.state;
+        const { avatar, currentUserFirstName } = this.props;
 
         return (
-            <Consumer>
-                {(context) => (
-                    <section className = { Styles.composer }>
-                        <img src = { context.avatar }/>
-                        <form onSubmit = { this._handleFormSubmit }>
-                            <textarea
-                                placeholder = { `What's on your mind, ${
-                                    context.currentUserFirstName
-                                }?` }
-                                value = { comment }
-                                onChange = { this._updateComment }
-                                onKeyPress = { this._submitOnEnter }
-                            />
-                            <input
-                                type = 'submit'
-                                value = 'Post'
-                            />
-                        </form>
-                    </section>
-                )}
-            </Consumer>
+            <section className = { Styles.composer }>
+                <img src = { avatar }/>
+                <form onSubmit = { this._handleFormSubmit }>
+                    <textarea
+                        placeholder = { `What's on your mind, ${
+                            currentUserFirstName
+                        }?` }
+                        value = { comment }
+                        onChange = { this._updateComment }
+                        onKeyPress = { this._submitOnEnter }
+                    />
+                    <input
+                        type = 'submit'
+                        value = 'Post'
+                    />
+                </form>
+            </section>
         );
     }
 }
