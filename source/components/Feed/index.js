@@ -14,14 +14,16 @@ import { Catcher } from 'components/Catcher';
 import Styles from './styles.m.css';
 import { getUniqueID, removeById } from 'instruments';
 import moment from 'moment';
+import { api } from 'config/api';
 
 export class Feed extends Component {
     state = {
-        posts: [
-            {id: '123', comment: 'Hi there!', created: moment.utc(1526825076849) },
-            {id: '124', comment: 'Hello!', created: moment.utc(1526825076855)},
-        ],
+        posts:      [],
         isSpinning: false,
+    }
+
+    componentDidMount() {
+        this._fetchPosts();
     }
 
     _createPost = (comment) => {
@@ -39,6 +41,27 @@ export class Feed extends Component {
     _deletePost = (id) => {
         this.setState(({posts}) => ({
             posts: removeById(posts, id),
+        }));
+    }
+
+    _setSpinnerState = (state) => {
+        this.setState(() => ({
+            isSpinning: state,
+        }));
+    }
+
+    _fetchPosts = async () => {
+        this._setSpinnerState(true);
+
+        const response = await fetch(api, {
+            method: 'GET',
+        });
+
+        const { data: posts } = await response.json();
+
+        this.setState(() => ({
+            posts,
+            isSpinning: false,
         }));
     }
 

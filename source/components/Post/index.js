@@ -12,13 +12,13 @@ import Styles from './styles.m.css';
 @withProfile
 export class Post extends Component {
     static propTypes = {
-        id:                   PropTypes.string.isRequired,
-        comment:              PropTypes.string.isRequired,
-        created:              PropTypes.object.isRequired,
-        _deletePost:          PropTypes.func.isRequired,
-        avatar:               PropTypes.string.isRequired,
-        currentUserFirstName: PropTypes.string.isRequired,
-        currentUserLastName:  PropTypes.string.isRequired,
+        id:          PropTypes.string.isRequired,
+        comment:     PropTypes.string.isRequired,
+        created:     PropTypes.object.isRequired,
+        _deletePost: PropTypes.func.isRequired,
+        avatar:      PropTypes.string.isRequired,
+        firstName:   PropTypes.string.isRequired,
+        lastName:    PropTypes.string.isRequired,
     };
 
     _handleDelete = () => {
@@ -28,16 +28,18 @@ export class Post extends Component {
     }
 
     render() {
-        const { comment, created } = this.props;
-        const { avatar, currentUserFirstName, currentUserLastName } = this.props;
+        const {
+            comment,
+            created,
+            avatar,
+            firstName,
+            lastName,
+        } = this.props;
 
         return (
             <section className = { Styles.post }>
                 <img src = { avatar } />
-                <a>
-                    { `${currentUserFirstName} ${
-                        currentUserLastName}` }
-                </a>
+                <a>{ `${firstName} ${lastName}` }</a>
                 <time>{moment.unix(created).format('MMMM D h:mm:ss a')}</time>
                 <p>{ comment }</p>
                 <button
