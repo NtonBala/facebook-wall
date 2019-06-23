@@ -15,13 +15,6 @@ import { getUniqueID, removeById } from 'instruments';
 import moment from 'moment';
 
 export class Feed extends Component {
-    constructor() {
-        super();
-
-        this._createPost = this._createPost.bind(this);
-        this._deletePost = this._deletePost.bind(this);
-    }
-
     state = {
         posts: [
             {id: '123', comment: 'Hi there!', created: moment.utc(1526825076849) },
@@ -30,7 +23,7 @@ export class Feed extends Component {
         isSpinning: false,
     }
 
-    _createPost(comment) {
+    _createPost = (comment) => {
         const post = {
             id:      getUniqueID(),
             created: moment.utc(),
@@ -42,7 +35,7 @@ export class Feed extends Component {
         }));
     }
 
-    _deletePost(id) {
+    _deletePost = (id) => {
         this.setState(({posts}) => ({
             posts: removeById(posts, id),
         }));
