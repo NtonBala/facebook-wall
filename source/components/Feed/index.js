@@ -45,7 +45,17 @@ export class Feed extends Component {
         }));
     }
 
-    _deletePost = (id) => {
+    _deletePost = async (id) => {
+        this._setSpinnerState(true);
+
+        await fetch(`${api}/${id}`, {
+            method:  'DELETE',
+            headers: {
+                Authorization: TOKEN,
+            },
+
+        });
+
         this.setState(({posts}) => ({
             posts: removeById(posts, id),
         }));
