@@ -14,7 +14,7 @@ export class Post extends Component {
     static propTypes = {
         id:          PropTypes.string.isRequired,
         comment:     PropTypes.string.isRequired,
-        created:     PropTypes.object.isRequired,
+        created:     PropTypes.number.isRequired,
         _deletePost: PropTypes.func.isRequired,
         avatar:      PropTypes.string.isRequired,
         firstName:   PropTypes.string.isRequired,

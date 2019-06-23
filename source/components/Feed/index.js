@@ -12,9 +12,8 @@ import { Catcher } from 'components/Catcher';
 
 // Instruments
 import Styles from './styles.m.css';
-import { getUniqueID, removeById } from 'instruments';
-import moment from 'moment';
-import { api } from 'config/api';
+import { removeById } from 'instruments';
+import { api, TOKEN } from 'config/api';
 
 export class Feed extends Component {
     state = {
@@ -26,15 +25,23 @@ export class Feed extends Component {
         this._fetchPosts();
     }
 
-    _createPost = (comment) => {
-        const post = {
-            id:      getUniqueID(),
-            created: moment.utc(),
-            comment,
-        };
+    _createPost = async (comment) => {
+        this._setSpinnerState(true);
+
+        const response = await fetch(api, {
+            method:  'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization:  TOKEN,
+            },
+            body: JSON.stringify({ comment }),
+        });
+
+        const { data: post } = await response.json();
 
         this.setState(({posts}) => ({
-            posts: [ post, ...posts ],
+            posts:      [ post, ...posts ],
+            isSpinning: false,
         }));
     }
 
