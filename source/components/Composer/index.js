@@ -55,7 +55,6 @@ export class Composer extends Component {
 
         if (enterKey) {
             event.preventDefault();
-            
             this._submitComment();
         }
     }

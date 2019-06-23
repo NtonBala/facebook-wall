@@ -11,7 +11,7 @@ import { Spinner } from 'components/Spinner';
 
 // Instruments
 import Styles from './styles.m.css';
-import { getUniqueID } from 'instruments';
+import { getUniqueID, removeById } from 'instruments';
 import moment from 'moment';
 
 export class Feed extends Component {
@@ -19,6 +19,7 @@ export class Feed extends Component {
         super();
 
         this._createPost = this._createPost.bind(this);
+        this._deletePost = this._deletePost.bind(this);
     }
 
     state = {
@@ -41,6 +42,12 @@ export class Feed extends Component {
         }));
     }
 
+    _deletePost(id) {
+        this.setState(({posts}) => ({
+            posts: removeById(posts, id),
+        }));
+    }
+
     render() {
         const { posts, isSpinning } = this.state;
 
@@ -49,6 +56,7 @@ export class Feed extends Component {
                 <Post
                     key = { post.id }
                     { ...post }
+                    _deletePost = { this._deletePost }
                 />
             );
         });

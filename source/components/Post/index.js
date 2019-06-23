@@ -11,9 +11,23 @@ import Styles from './styles.m.css';
 
 export class Post extends Component {
     static propTypes = {
-        comment: PropTypes.string.isRequired,
-        created: PropTypes.object.isRequired,
+        id:          PropTypes.string.isRequired,
+        comment:     PropTypes.string.isRequired,
+        created:     PropTypes.object.isRequired,
+        _deletePost: PropTypes.func.isRequired,
     };
+
+    constructor() {
+        super();
+
+        this._handleDelete = this._handleDelete.bind(this);
+    }
+
+    _handleDelete() {
+        const { id, _deletePost } = this.props;
+
+        _deletePost(id);
+    }
 
     render() {
         const { comment, created } = this.props;
@@ -29,6 +43,10 @@ export class Post extends Component {
                         </a>
                         <time>{moment.unix(created).format('MMMM D h:mm:ss a')}</time>
                         <p>{ comment }</p>
+                        <button
+                            className = 'cross'
+                            onClick = { this._handleDelete }
+                        />
                     </section>
                 )}
             </Consumer>
