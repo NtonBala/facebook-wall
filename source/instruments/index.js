@@ -1,3 +1,4 @@
+// Course preparations
 export const sum = (operand1, operand2) => {
     if (typeof operand1 !== 'number') {
         throw new Error('Operand 1 should be a number.');
@@ -38,4 +39,9 @@ export const getFullApiUrl = (api, GROUP_ID) => {
     }
 
     return `${api}/${GROUP_ID}`;
+};
+
+// Custom helpers
+export const removeById = (arr, id) => {
+    return arr.filter((obj) => obj.id !== id);
 };

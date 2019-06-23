@@ -11,11 +11,8 @@ import { Spinner } from 'components/Spinner';
 
 // Instruments
 import Styles from './styles.m.css';
-import { getUniqueID } from 'instruments';
+import { getUniqueID, removeById } from 'instruments';
 import moment from 'moment';
-
-// Helpers
-import { removeById } from 'helpers';
 
 export class Feed extends Component {
     constructor() {
