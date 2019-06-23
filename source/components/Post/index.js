@@ -17,13 +17,7 @@ export class Post extends Component {
         _deletePost: PropTypes.func.isRequired,
     };
 
-    constructor() {
-        super();
-
-        this._handleDelete = this._handleDelete.bind(this);
-    }
-
-    _handleDelete() {
+    _handleDelete = () => {
         const { id, _deletePost } = this.props;
 
         _deletePost(id);
