@@ -8,11 +8,11 @@ import { Provider } from 'components/HOC/withProfile';
 import { Catcher } from 'components/Catcher';
 
 // Instruments
-import avatar from 'theme/assets/lisa';
+import avatar from 'theme/assets/bart';
 
 const options = {
-    currentUserFirstName: 'Lisa',
-    currentUserLastName:  'Simpson',
+    currentUserFirstName: 'Антон',
+    currentUserLastName:  'Балашов',
     avatar,
 };
 
