@@ -8,6 +8,7 @@ import { StatusBar } from 'components/StatusBar';
 import { Composer } from 'components/Composer';
 import { Post } from 'components/Post';
 import { Spinner } from 'components/Spinner';
+import { Catcher } from 'components/Catcher';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -46,11 +47,12 @@ export class Feed extends Component {
 
         const postsJSX = posts.map((post) => {
             return (
-                <Post
-                    key = { post.id }
-                    { ...post }
-                    _deletePost = { this._deletePost }
-                />
+                <Catcher key = { post.id }>
+                    <Post
+                        { ...post }
+                        _deletePost = { this._deletePost }
+                    />
+                </Catcher>
             );
         });
 
