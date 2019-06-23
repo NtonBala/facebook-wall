@@ -23,6 +23,11 @@ export class Feed extends Component {
 
     componentDidMount() {
         this._fetchPosts();
+        this.refetch = setInterval(this._fetchPosts, 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.refetch);
     }
 
     _createPost = async (comment) => {
