@@ -1,10 +1,12 @@
 // Core
 import React, { Component } from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
+import { string, number, func, array } from 'prop-types';
 
 // Components
 import { withProfile } from 'components/HOC/withProfile';
+import { Like } from 'components/Like';
+
 
 // Instruments
 import Styles from './styles.m.css';
@@ -12,15 +14,17 @@ import Styles from './styles.m.css';
 @withProfile
 export class Post extends Component {
     static propTypes = {
-        id:                   PropTypes.string.isRequired,
-        comment:              PropTypes.string.isRequired,
-        created:              PropTypes.number.isRequired,
-        _deletePost:          PropTypes.func.isRequired,
-        avatar:               PropTypes.string.isRequired,
-        firstName:            PropTypes.string.isRequired,
-        lastName:             PropTypes.string.isRequired,
-        currentUserFirstName: PropTypes.string.isRequired,
-        currentUserLastName:  PropTypes.string.isRequired,
+        id:                   string.isRequired,
+        comment:              string.isRequired,
+        created:              number.isRequired,
+        likes:                array.isRequired,
+        _deletePost:          func.isRequired,
+        _likePost:            func.isRequired,
+        avatar:               string.isRequired,
+        firstName:            string.isRequired,
+        lastName:             string.isRequired,
+        currentUserFirstName: string.isRequired,
+        currentUserLastName:  string.isRequired,
     };
 
     _handleDelete = () => {
@@ -47,11 +51,14 @@ export class Post extends Component {
 
     render() {
         const {
+            id,
             comment,
             created,
             avatar,
             firstName,
             lastName,
+            likes,
+            _likePost,
         } = this.props;
 
         const cross = this._getCross();
@@ -62,6 +69,11 @@ export class Post extends Component {
                 <a>{ `${firstName} ${lastName}` }</a>
                 <time>{moment.unix(created).format('MMMM D h:mm:ss a')}</time>
                 <p>{ comment }</p>
+                <Like
+                    _likePost = { _likePost }
+                    likes = { likes }
+                    postId = { id }
+                />
                 { cross }
             </section>
         );

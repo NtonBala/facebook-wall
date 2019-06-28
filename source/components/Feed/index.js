@@ -12,7 +12,7 @@ import { Catcher } from 'components/Catcher';
 
 // Instruments
 import Styles from './styles.m.css';
-import { removeById } from 'instruments';
+import { removeById, delay, getUniqueID } from 'instruments';
 import { api, TOKEN } from 'config/api';
 
 export class Feed extends Component {
@@ -23,7 +23,7 @@ export class Feed extends Component {
 
     componentDidMount() {
         this._fetchPosts();
-        this.refetch = setInterval(this._fetchPosts, 1000);
+        //this.refetch = setInterval(this._fetchPosts, 1000);
     }
 
     componentWillUnmount() {
@@ -62,7 +62,8 @@ export class Feed extends Component {
         });
 
         this.setState(({posts}) => ({
-            posts: removeById(posts, id),
+            posts:      removeById(posts, id),
+            isSpinning: false,
         }));
     }
 
@@ -87,6 +88,36 @@ export class Feed extends Component {
         }));
     }
 
+    _likePost = async (id) => {
+        const { currentUserFirstName, currentUserLastName } = this.props;
+
+        this._setSpinnerState(true);
+
+        await delay(1200);
+
+        const newPosts = this.state.posts.map((post) => {
+            if (post.id === id) {
+                return {
+                    ...post,
+                    likes: [
+                        {
+                            id:        getUniqueID(),
+                            firstName: currentUserFirstName,
+                            lastName:  currentUserLastName,
+                        },
+                    ],
+                };
+            }
+
+            return post;
+        });
+
+        this.setState(() => ({
+            posts:      newPosts,
+            isSpinning: false,
+        }));
+    }
+
     render() {
         const { posts, isSpinning } = this.state;
 
@@ -96,6 +127,7 @@ export class Feed extends Component {
                     <Post
                         { ...post }
                         _deletePost = { this._deletePost }
+                        _likePost = { this._likePost }
                     />
                 </Catcher>
             );
