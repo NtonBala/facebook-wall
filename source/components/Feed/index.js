@@ -10,6 +10,7 @@ import { Composer } from 'components/Composer';
 import { Post } from 'components/Post';
 import { Spinner } from 'components/Spinner';
 import { Catcher } from 'components/Catcher';
+import { withProfile } from 'components/HOC/withProfile';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -17,6 +18,7 @@ import { removeById, delay, getUniqueID } from 'instruments';
 import { api, TOKEN, GROUP_ID } from 'config/api';
 import { socket } from 'socket/init';
 
+@withProfile
 export class Feed extends Component {
     static propTypes = {
         currentUserFirstName: string.isRequired,

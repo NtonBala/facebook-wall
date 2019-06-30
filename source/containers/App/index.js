@@ -22,7 +22,7 @@ export default class App extends Component {
         return (
             <Catcher>
                 <Provider value = { options }>
-                    <Feed { ...options }/>
+                    <Feed/>
                 </Provider>
             </Catcher>
         );
