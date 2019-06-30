@@ -2,6 +2,7 @@
 
 // Core
 import React, { Component } from 'react';
+import { string } from 'prop-types';
 
 // Components
 import { StatusBar } from 'components/StatusBar';
@@ -13,21 +14,57 @@ import { Catcher } from 'components/Catcher';
 // Instruments
 import Styles from './styles.m.css';
 import { removeById, delay, getUniqueID } from 'instruments';
-import { api, TOKEN } from 'config/api';
+import { api, TOKEN, GROUP_ID } from 'config/api';
+import { socket } from 'socket/init';
 
 export class Feed extends Component {
+    static propTypes = {
+        currentUserFirstName: string.isRequired,
+        currentUserLastName:  string.isRequired,
+    }
+
     state = {
         posts:      [],
         isSpinning: false,
     }
 
     componentDidMount() {
+        const { currentUserFirstName, currentUserLastName } = this.props;
+
         this._fetchPosts();
-        //this.refetch = setInterval(this._fetchPosts, 1000);
+
+        socket.emit('join', GROUP_ID);
+
+        socket.on('create', (postJSON) => {
+            const { data: createdPost, meta } = JSON.parse(postJSON);
+
+            if (
+                `${currentUserFirstName} ${currentUserLastName}`
+                !== `${meta.authorFirstName} ${meta.authorLastName}`
+            ) {
+                this.setState(({ posts }) => ({
+                    posts: [ createdPost, ...posts ],
+                }));
+            }
+        });
+
+        socket.on('remove', (postJSON) => {
+            const { data: removedPost, meta } = JSON.parse(postJSON);
+
+            if (
+                `${currentUserFirstName} ${currentUserLastName}`
+                !== `${meta.authorFirstName} ${meta.authorLastName}`
+            ) {
+                this.setState(({ posts }) => ({
+                    posts: posts.filter((post) => post.id !== removedPost.id),
+                }));
+            }
+        });
     }
 
     componentWillUnmount() {
-        clearInterval(this.refetch);
+        socket.removeListener('create');
+        socket.removeListener('remove');
     }
 
     _createPost = async (comment) => {
