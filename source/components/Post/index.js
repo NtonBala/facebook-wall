@@ -18,8 +18,9 @@ export class Post extends Component {
         comment:              string.isRequired,
         created:              number.isRequired,
         likes:                array.isRequired,
-        _deletePost:          func.isRequired,
+        _removePost:          func.isRequired,
         _likePost:            func.isRequired,
+        _unlikePost:          func.isRequired,
         avatar:               string.isRequired,
         firstName:            string.isRequired,
         lastName:             string.isRequired,
@@ -27,10 +28,10 @@ export class Post extends Component {
         currentUserLastName:  string.isRequired,
     };
 
-    _handleDelete = () => {
-        const { id, _deletePost } = this.props;
+    _removePost = () => {
+        const { id, _removePost } = this.props;
 
-        _deletePost(id);
+        _removePost(id);
     }
 
     _getCross = () => {
@@ -44,7 +45,7 @@ export class Post extends Component {
         return `${firstName} ${lastName}` === `${currentUserFirstName} ${currentUserLastName}` ? (
             <button
                 className = { Styles.cross }
-                onClick = { this._handleDelete }
+                onClick = { this._removePost }
             />
         ) : null;
     }
@@ -59,6 +60,7 @@ export class Post extends Component {
             lastName,
             likes,
             _likePost,
+            _unlikePost,
         } = this.props;
 
         const cross = this._getCross();
@@ -71,6 +73,7 @@ export class Post extends Component {
                 <p>{ comment }</p>
                 <Like
                     _likePost = { _likePost }
+                    _unlikePost = { _unlikePost }
                     likes = { likes }
                     postId = { id }
                 />

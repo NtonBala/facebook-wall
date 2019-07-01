@@ -13,6 +13,7 @@ import { withProfile } from 'components/HOC/withProfile';
 export class Like extends Component {
     static propTypes = {
         _likePost:            func.isRequired,
+        _unlikePost:          func.isRequired,
         currentUserFirstName: string.isRequired,
         currentUserLastName:  string.isRequired,
         postId:               string.isRequired,
@@ -70,10 +71,14 @@ export class Like extends Component {
         });
     }
 
-    _likePost = () => {
-        const { _likePost, postId } = this.props;
+    _handleLikePostClick = () => {
+        const { _likePost, _unlikePost, postId } = this.props;
 
-        _likePost(postId);
+        if (this._getLikedByMe()) {
+            _unlikePost(postId);
+        } else {
+            _likePost(postId);
+        }
     }
 
     _getLikesDescription = () => {
@@ -101,7 +106,7 @@ export class Like extends Component {
             <section className = { Styles.like }>
                 <button
                     className = { likeStyles }
-                    onClick = { this._likePost }>
+                    onClick = { this._handleLikePostClick }>
                     Like
                 </button>
                 <div>

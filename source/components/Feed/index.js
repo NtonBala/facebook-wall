@@ -37,6 +37,7 @@ export class Feed extends Component {
 
         socket.emit('join', GROUP_ID);
 
+        //on create post by other user
         socket.on('create', (postJSON) => {
             const { data: createdPost, meta } = JSON.parse(postJSON);
 
@@ -50,6 +51,7 @@ export class Feed extends Component {
             }
         });
 
+        //on remove post by other user
         socket.on('remove', (postJSON) => {
             const { data: removedPost, meta } = JSON.parse(postJSON);
 
@@ -70,6 +72,8 @@ export class Feed extends Component {
     }
 
     _createPost = async (comment) => {
+        //create post by current user
+
         this._setSpinnerState(true);
 
         const response = await fetch(api, {
@@ -89,7 +93,9 @@ export class Feed extends Component {
         }));
     }
 
-    _deletePost = async (id) => {
+    _removePost = async (id) => {
+        //remove post by current user
+
         this._setSpinnerState(true);
 
         await fetch(`${api}/${id}`, {
@@ -127,7 +133,7 @@ export class Feed extends Component {
         }));
     }
 
-    _likePost = async (id) => {
+    _likePost = async (postId) => {
         const { currentUserFirstName, currentUserLastName } = this.props;
 
         this._setSpinnerState(true);
@@ -135,16 +141,44 @@ export class Feed extends Component {
         await delay(1200);
 
         const newPosts = this.state.posts.map((post) => {
-            if (post.id === id) {
+            if (post.id === postId) {
                 return {
                     ...post,
                     likes: [
+                        ...post.likes,
                         {
                             id:        getUniqueID(),
                             firstName: currentUserFirstName,
                             lastName:  currentUserLastName,
                         },
                     ],
+                };
+            }
+
+            return post;
+        });
+
+        this.setState(() => ({
+            posts:      newPosts,
+            isSpinning: false,
+        }));
+    }
+
+    _unlikePost = async (postId) => {
+        const { currentUserFirstName, currentUserLastName } = this.props;
+
+        this._setSpinnerState(true);
+
+        await delay(1200);
+
+        const newPosts = this.state.posts.map((post) => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    likes: post.likes.filter((like) => (
+                        `${currentUserFirstName} ${currentUserLastName}`
+                        !== `${like.firstName} ${like.lastName}`
+                    )),
                 };
             }
 
@@ -165,8 +199,9 @@ export class Feed extends Component {
                 <Catcher key = { post.id }>
                     <Post
                         { ...post }
-                        _deletePost = { this._deletePost }
+                        _removePost = { this._removePost }
                         _likePost = { this._likePost }
+                        _unlikePost = { this._unlikePost }
                     />
                 </Catcher>
             );
