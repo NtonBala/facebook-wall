@@ -14,7 +14,7 @@ import { withProfile } from 'components/HOC/withProfile';
 
 // Instruments
 import Styles from './styles.m.css';
-import { removeById, delay, getUniqueID } from 'instruments';
+import { removeById } from 'instruments';
 import { api, TOKEN, GROUP_ID } from 'config/api';
 import { socket } from 'socket/init';
 
@@ -37,6 +37,7 @@ export class Feed extends Component {
 
         socket.emit('join', GROUP_ID);
 
+        //on create post by other user
         socket.on('create', (postJSON) => {
             const { data: createdPost, meta } = JSON.parse(postJSON);
 
@@ -50,6 +51,7 @@ export class Feed extends Component {
             }
         });
 
+        //on remove post by other user
         socket.on('remove', (postJSON) => {
             const { data: removedPost, meta } = JSON.parse(postJSON);
 
@@ -62,14 +64,37 @@ export class Feed extends Component {
                 }));
             }
         });
+
+        //on like post by other user
+        socket.on('like', (postJSON) => {
+            const { data: updatedPost, meta } = JSON.parse(postJSON);
+
+            if (
+                `${currentUserFirstName} ${currentUserLastName}`
+                !== `${meta.authorFirstName} ${meta.authorLastName}`
+            ) {
+                this.setState(({ posts }) => ({
+                    posts: posts.map((post) => {
+                        if (post.id === updatedPost.id) {
+                            return updatedPost;
+                        }
+
+                        return post;
+                    }),
+                }));
+            }
+        });
     }
 
     componentWillUnmount() {
         socket.removeListener('create');
         socket.removeListener('remove');
+        socket.removeListener('like');
     }
 
     _createPost = async (comment) => {
+        //create post by current user
+
         this._setSpinnerState(true);
 
         const response = await fetch(api, {
@@ -89,7 +114,9 @@ export class Feed extends Component {
         }));
     }
 
-    _deletePost = async (id) => {
+    _removePost = async (id) => {
+        //remove post by current user
+
         this._setSpinnerState(true);
 
         await fetch(`${api}/${id}`, {
@@ -97,7 +124,6 @@ export class Feed extends Component {
             headers: {
                 Authorization: TOKEN,
             },
-
         });
 
         this.setState(({posts}) => ({
@@ -127,25 +153,23 @@ export class Feed extends Component {
         }));
     }
 
-    _likePost = async (id) => {
-        const { currentUserFirstName, currentUserLastName } = this.props;
+    _likePost = async (postId) => {
+        //like post by current user
 
         this._setSpinnerState(true);
 
-        await delay(1200);
+        const response = await fetch(`${api}/${postId}`, {
+            method:  'PUT',
+            headers: {
+                Authorization: TOKEN,
+            },
+        });
+
+        const { data: newPost } = await response.json();
 
         const newPosts = this.state.posts.map((post) => {
-            if (post.id === id) {
-                return {
-                    ...post,
-                    likes: [
-                        {
-                            id:        getUniqueID(),
-                            firstName: currentUserFirstName,
-                            lastName:  currentUserLastName,
-                        },
-                    ],
-                };
+            if (post.id === postId) {
+                return newPost;
             }
 
             return post;
@@ -165,8 +189,8 @@ export class Feed extends Component {
                 <Catcher key = { post.id }>
                     <Post
                         { ...post }
-                        _deletePost = { this._deletePost }
                         _likePost = { this._likePost }
+                        _removePost = { this._removePost }
                     />
                 </Catcher>
             );
