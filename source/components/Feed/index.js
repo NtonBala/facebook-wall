@@ -64,11 +64,32 @@ export class Feed extends Component {
                 }));
             }
         });
+
+        //on like post by other user
+        socket.on('like', (postJSON) => {
+            const { data: updatedPost, meta } = JSON.parse(postJSON);
+
+            if (
+                `${currentUserFirstName} ${currentUserLastName}`
+                !== `${meta.authorFirstName} ${meta.authorLastName}`
+            ) {
+                this.setState(({ posts }) => ({
+                    posts: posts.map((post) => {
+                        if (post.id === updatedPost.id) {
+                            return updatedPost;
+                        }
+
+                        return post;
+                    }),
+                }));
+            }
+        });
     }
 
     componentWillUnmount() {
         socket.removeListener('create');
         socket.removeListener('remove');
+        socket.removeListener('like');
     }
 
     _createPost = async (comment) => {
