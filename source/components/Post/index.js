@@ -20,7 +20,6 @@ export class Post extends Component {
         likes:                array.isRequired,
         _removePost:          func.isRequired,
         _likePost:            func.isRequired,
-        _unlikePost:          func.isRequired,
         avatar:               string.isRequired,
         firstName:            string.isRequired,
         lastName:             string.isRequired,
@@ -60,7 +59,6 @@ export class Post extends Component {
             lastName,
             likes,
             _likePost,
-            _unlikePost,
         } = this.props;
 
         const cross = this._getCross();
@@ -73,7 +71,6 @@ export class Post extends Component {
                 <p>{ comment }</p>
                 <Like
                     _likePost = { _likePost }
-                    _unlikePost = { _unlikePost }
                     likes = { likes }
                     postId = { id }
                 />

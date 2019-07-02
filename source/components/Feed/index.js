@@ -14,7 +14,7 @@ import { withProfile } from 'components/HOC/withProfile';
 
 // Instruments
 import Styles from './styles.m.css';
-import { removeById, delay, getUniqueID } from 'instruments';
+import { removeById } from 'instruments';
 import { api, TOKEN, GROUP_ID } from 'config/api';
 import { socket } from 'socket/init';
 
@@ -103,7 +103,6 @@ export class Feed extends Component {
             headers: {
                 Authorization: TOKEN,
             },
-
         });
 
         this.setState(({posts}) => ({
@@ -134,52 +133,22 @@ export class Feed extends Component {
     }
 
     _likePost = async (postId) => {
-        const { currentUserFirstName, currentUserLastName } = this.props;
+        //like post by current user
 
         this._setSpinnerState(true);
 
-        await delay(1200);
-
-        const newPosts = this.state.posts.map((post) => {
-            if (post.id === postId) {
-                return {
-                    ...post,
-                    likes: [
-                        ...post.likes,
-                        {
-                            id:        getUniqueID(),
-                            firstName: currentUserFirstName,
-                            lastName:  currentUserLastName,
-                        },
-                    ],
-                };
-            }
-
-            return post;
+        const response = await fetch(`${api}/${postId}`, {
+            method:  'PUT',
+            headers: {
+                Authorization: TOKEN,
+            },
         });
 
-        this.setState(() => ({
-            posts:      newPosts,
-            isSpinning: false,
-        }));
-    }
-
-    _unlikePost = async (postId) => {
-        const { currentUserFirstName, currentUserLastName } = this.props;
-
-        this._setSpinnerState(true);
-
-        await delay(1200);
+        const { data: newPost } = await response.json();
 
         const newPosts = this.state.posts.map((post) => {
             if (post.id === postId) {
-                return {
-                    ...post,
-                    likes: post.likes.filter((like) => (
-                        `${currentUserFirstName} ${currentUserLastName}`
-                        !== `${like.firstName} ${like.lastName}`
-                    )),
-                };
+                return newPost;
             }
 
             return post;
@@ -199,9 +168,8 @@ export class Feed extends Component {
                 <Catcher key = { post.id }>
                     <Post
                         { ...post }
-                        _removePost = { this._removePost }
                         _likePost = { this._likePost }
-                        _unlikePost = { this._unlikePost }
+                        _removePost = { this._removePost }
                     />
                 </Catcher>
             );
