@@ -3,6 +3,8 @@
 // Core
 import React, { Component } from 'react';
 import { string } from 'prop-types';
+import { Transition } from 'react-transition-group';
+import { fromTo } from 'gsap';
 
 // Components
 import { StatusBar } from 'components/StatusBar';
@@ -181,6 +183,10 @@ export class Feed extends Component {
         }));
     }
 
+    _animateComposerEnter = (composer) => {
+        fromTo(composer, 1, { opacity: 0, rotationX: 50 }, { opacity: 1, rotationX: 0 });
+    }
+
     render() {
         const { posts, isSpinning } = this.state;
 
@@ -200,7 +206,13 @@ export class Feed extends Component {
             <section className = { Styles.feed }>
                 <Spinner isSpinning = { isSpinning }/>
                 <StatusBar/>
-                <Composer _createPost = { this._createPost }/>
+                <Transition
+                    appear
+                    in
+                    timeout = { 1000 }
+                    onEnter = { this._animateComposerEnter }>
+                    <Composer _createPost = { this._createPost }/>
+                </Transition>
                 {postsJSX}
             </section>
         );
