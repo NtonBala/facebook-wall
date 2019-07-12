@@ -13,6 +13,7 @@ import { Post } from 'components/Post';
 import { Spinner } from 'components/Spinner';
 import { Catcher } from 'components/Catcher';
 import { withProfile } from 'components/HOC/withProfile';
+import { Postman } from 'components/Postman';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -213,6 +214,7 @@ export class Feed extends Component {
                     onEnter = { this._animateComposerEnter }>
                     <Composer _createPost = { this._createPost }/>
                 </Transition>
+                <Postman/>
                 {postsJSX}
             </section>
         );
