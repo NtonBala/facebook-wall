@@ -6,7 +6,7 @@ import { string } from 'prop-types';
 import {
     Transition,
     CSSTransition,
-    TransitionGroup
+    TransitionGroup,
 } from 'react-transition-group';
 import { fromTo } from 'gsap';
 
