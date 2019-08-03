@@ -6,7 +6,7 @@ import { string } from 'prop-types';
 import {
     Transition,
     CSSTransition,
-    TransitionGroup
+    TransitionGroup,
 } from 'react-transition-group';
 import { fromTo } from 'gsap';
 
@@ -209,6 +209,8 @@ export class Feed extends Component {
                     classNames = {{
                         enter:       Styles.postInStart,
                         enterActive: Styles.postInEnd,
+                        exit:        Styles.postOutStart,
+                        exitActive:  Styles.postOutEnd,
                     }}
                     key = { post.id }
                     timeout = {{
