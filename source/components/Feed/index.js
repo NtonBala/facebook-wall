@@ -230,6 +230,14 @@ export class Feed extends Component {
 
         return (
             <section className = { Styles.feed }>
+                <Transition
+                    appear
+                    in
+                    timeout = { 4000 }
+                    onEnter = { this._animatePostmanEnter }
+                    onEntered = { this._animatePostmanEntered }>
+                    <Postman/>
+                </Transition>
 
                 <Spinner isSpinning = { isSpinning }/>
 
@@ -241,15 +249,6 @@ export class Feed extends Component {
                     timeout = { 1000 }
                     onEnter = { this._animateComposerEnter }>
                     <Composer _createPost = { this._createPost }/>
-                </Transition>
-
-                <Transition
-                    appear
-                    in
-                    timeout = { 4000 }
-                    onEnter = { this._animatePostmanEnter }
-                    onEntered = { this._animatePostmanEntered }>
-                    <Postman/>
                 </Transition>
 
                 <TransitionGroup>
