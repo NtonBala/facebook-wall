@@ -1,5 +1,5 @@
 // Core
-import { sum } from './';
+import { sum, delay } from './';
 
 describe('instruments:', () => {
     test('sum function should be a function', () => {
@@ -17,5 +17,9 @@ describe('instruments:', () => {
     test('sum function should return an addition of two arguments passed', () => {
         expect(sum(2, 3)).toBe(5);
         expect(sum(1, 8)).toMatchSnapshot();
+    });
+
+    test('delay function should return a resolved promise', async () => {
+        await expect(delay(5000)).resolves.toBe('A resolved promise');
     });
 });
