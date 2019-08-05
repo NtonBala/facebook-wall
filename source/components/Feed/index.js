@@ -18,6 +18,7 @@ import { Spinner } from 'components/Spinner';
 import { Catcher } from 'components/Catcher';
 import { withProfile } from 'components/HOC/withProfile';
 import { Postman } from 'components/Postman';
+import { Counter } from 'components/Counter';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -230,6 +231,14 @@ export class Feed extends Component {
 
         return (
             <section className = { Styles.feed }>
+                <Transition
+                    appear
+                    in
+                    timeout = { 4000 }
+                    onEnter = { this._animatePostmanEnter }
+                    onEntered = { this._animatePostmanEntered }>
+                    <Postman/>
+                </Transition>
 
                 <Spinner isSpinning = { isSpinning }/>
 
@@ -243,14 +252,7 @@ export class Feed extends Component {
                     <Composer _createPost = { this._createPost }/>
                 </Transition>
 
-                <Transition
-                    appear
-                    in
-                    timeout = { 4000 }
-                    onEnter = { this._animatePostmanEnter }
-                    onEntered = { this._animatePostmanEntered }>
-                    <Postman/>
-                </Transition>
+                <Counter count = { postsJSX.length }/>
 
                 <TransitionGroup>
                     { postsJSX }
