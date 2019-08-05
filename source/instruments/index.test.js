@@ -1,5 +1,11 @@
 // Core
-import { sum, delay, getUniqueID } from './';
+import {
+    sum,
+    delay,
+    getUniqueID,
+    getFullApiUrl,
+    removeById,
+} from './';
 
 describe('instruments:', () => {
     test('sum function should be a function', () => {
@@ -35,5 +41,31 @@ describe('instruments:', () => {
         expect(typeof getUniqueID()).toBe('string');
         expect(getUniqueID(5)).toHaveLength(5);
         expect(getUniqueID(13)).toHaveLength(13);
+    });
+
+    test('getFullApiUrl function should be a function', () => {
+        expect(getFullApiUrl).toBeInstanceOf(Function);
+    });
+
+    test('getFullApiUrl function should throw, when called with non-string type as first or second argument', () => {
+        expect(() => getFullApiUrl(1, 'group-id')).toThrow();
+        expect(() => getFullApiUrl('protocol://hostname/path', 2)).toThrow();
+    });
+
+    test('getFullApiUrl function should return full API URL matching its snapshot counterpart', () => {
+        expect(getFullApiUrl('protocol://hostname/path', 'group-id')).toMatchSnapshot();
+    });
+
+    test('removeById function should be a function', () => {
+        expect(removeById).toBeInstanceOf(Function);
+    });
+
+    test('removeById function should throw, when called with non-array or non-string type as first or second argument respectively', () => {
+        expect(() => removeById('array', 'id')).toThrow();
+        expect(() => removeById([], 1)).toThrow();
+    });
+
+    test('removeById function should return filtered array matching its snapshot counterpart', () => {
+        expect(removeById([{id: '1'}, {id: '2'}], '2')).toMatchSnapshot();
     });
 });
