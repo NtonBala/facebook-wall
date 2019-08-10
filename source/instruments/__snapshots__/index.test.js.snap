@@ -1,3 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`instruments: getFullApiUrl function should return full API URL matching its snapshot counterpart 1`] = `"protocol://hostname/path/group-id"`;
+
+exports[`instruments: removeById function should return filtered array matching its snapshot counterpart 1`] = `
+Array [
+  Object {
+    "id": "1",
+  },
+]
+`;
+
 exports[`instruments: sum function should return an addition of two arguments passed 1`] = `9`;

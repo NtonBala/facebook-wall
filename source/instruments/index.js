@@ -43,5 +43,11 @@ export const getFullApiUrl = (api, GROUP_ID) => {
 
 // Custom helpers
 export const removeById = (arr, id) => {
+    if (!Array.isArray(arr) || typeof id !== 'string') {
+        throw new Error(
+            '\'arr\' and \'id\' arguments passed should be an array and string respectively!',
+        );
+    }
+
     return arr.filter((obj) => obj.id !== id);
 };
