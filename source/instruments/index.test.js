@@ -66,6 +66,12 @@ describe('instruments:', () => {
         expect(() => removeById([], 1)).toThrow();
     });
 
+    test('removeByIdFunction should return new array', () => {
+        const arr = [];
+
+        expect(removeById(arr, 'id')).not.toBe(arr);
+    });
+
     test('removeById function should return filtered array matching its snapshot counterpart', () => {
         expect(removeById([{id: '1'}, {id: '2'}], '2')).toMatchSnapshot();
     });
