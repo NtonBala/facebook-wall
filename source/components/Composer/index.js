@@ -8,8 +8,7 @@ import { withProfile } from 'components/HOC/withProfile';
 // Instruments
 import Styles from './styles.m.css';
 
-@withProfile
-export class Composer extends Component {
+class Composer extends Component {
     static propTypes = {
         _createPost:          PropTypes.func.isRequired,
         avatar:               PropTypes.string.isRequired,
@@ -79,3 +78,8 @@ export class Composer extends Component {
         );
     }
 }
+
+const EnhanceabledComposer = withProfile(Composer);
+const WeakComposer = Composer;
+
+export {EnhanceabledComposer as Composer, WeakComposer };
