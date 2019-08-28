@@ -7,6 +7,8 @@ import {
     removeById,
 } from './';
 
+jest.setTimeout(10000);
+
 describe('instruments:', () => {
     test('sum function should be a function', () => {
         expect(sum).toBeInstanceOf(Function);
@@ -26,7 +28,7 @@ describe('instruments:', () => {
     });
 
     test('delay function should return a resolved promise', async () => {
-        await expect(delay(5000)).resolves.toBe('A resolved promise');
+        await expect(delay()).resolves.toBeUndefined();
     });
 
     test('getUniqueID function should be a function', () => {
