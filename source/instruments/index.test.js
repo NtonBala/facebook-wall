@@ -7,8 +7,6 @@ import {
     removeById,
 } from './';
 
-jest.setTimeout(10000);
-
 describe('instruments:', () => {
     test('sum function should be a function', () => {
         expect(sum).toBeInstanceOf(Function);
