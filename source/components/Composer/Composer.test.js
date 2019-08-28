@@ -1,6 +1,7 @@
 // Core
 import React from 'react';
 import { mount } from 'enzyme';
+import renderer from 'react-test-renderer';
 
 // Component
 import { WeakComposer as Composer } from './';
@@ -22,6 +23,7 @@ const updatedState = {
 };
 
 const result = mount(<Composer { ...props } />);
+const renderTree = renderer.create(<Composer { ...props }/>).toJSON();
 
 const _updateCommentSpy = jest.spyOn(result.instance(), '_updateComment');
 const _submitCommentSpy = jest.spyOn(result.instance(), '_submitComment');
@@ -78,16 +80,22 @@ describe('component Composer:', () => {
         expect(result.find('textarea').text()).toBe('');
     });
 
+    test('should correspond to its snapshot counterpart', () => {
+        expect(renderTree).toMatchSnapshot();
+    });
+
     test('should respond to state change properly', () => {
         result.setState({ comment });
 
         expect(result.state()).toEqual(updatedState);
         expect(result.find('textarea').text()).toBe(comment);
+        expect(result.html()).toMatchSnapshot();
 
         result.setState({ comment: '' });
 
         expect(result.state()).toEqual(initialState);
         expect(result.find('textarea').text()).toBe('');
+        expect(result.html()).toMatchSnapshot();
     });
 
     test('_createPost prop should not be called if trying to submit form with empty comment message', () => {
@@ -109,6 +117,7 @@ describe('component Composer:', () => {
         expect(_updateCommentSpy).toHaveBeenCalledTimes(1);
         expect(result.state()).toEqual(updatedState);
         expect(result.find('textarea').text()).toBe(comment);
+        expect(result.html()).toMatchSnapshot();
     });
 
     test('should handle form "submit" event', () => {
@@ -118,6 +127,7 @@ describe('component Composer:', () => {
         expect(_submitCommentSpy).toHaveBeenCalledTimes(1);
         expect(props._createPost).toHaveBeenCalledTimes(1);
         expect(result.state()).toEqual(initialState);
+        expect(result.html()).toMatchSnapshot();
 
         _handleFormSubmitSpy.mockClear();
         _submitCommentSpy.mockClear();
@@ -134,6 +144,7 @@ describe('component Composer:', () => {
 
         expect(_submitOnEnterSpy).toHaveBeenCalledTimes(1);
         expect(_submitCommentSpy).toHaveBeenCalledTimes(1);
+        expect(result.html()).toMatchSnapshot();
 
         _submitOnEnterSpy.mockClear();
         _submitCommentSpy.mockClear();
