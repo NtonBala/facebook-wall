@@ -4,6 +4,7 @@ import { hot } from 'react-hot-loader';
 
 // Components
 import { Feed } from 'components/Feed';
+import { Profile } from 'components/Profile';
 import { Provider } from 'components/HOC/withProfile';
 import { Catcher } from 'components/Catcher';
 
@@ -23,6 +24,7 @@ export default class App extends Component {
             <Catcher>
                 <Provider value = { options }>
                     <Feed/>
+                    <Profile/>
                 </Provider>
             </Catcher>
         );
