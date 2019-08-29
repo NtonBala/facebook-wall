@@ -1,7 +1,6 @@
 // Core
 import React from 'react';
 import { mount } from 'enzyme';
-import renderer from 'react-test-renderer';
 
 // Component
 import { WeakComposer as Composer } from './';
@@ -23,7 +22,6 @@ const updatedState = {
 };
 
 const result = mount(<Composer { ...props } />);
-const renderTree = renderer.create(<Composer { ...props }/>).toJSON();
 
 const _updateCommentSpy = jest.spyOn(result.instance(), '_updateComment');
 const _submitCommentSpy = jest.spyOn(result.instance(), '_submitComment');
@@ -81,7 +79,7 @@ describe('component Composer:', () => {
     });
 
     test('should correspond to its snapshot counterpart', () => {
-        expect(renderTree).toMatchSnapshot();
+        expect(result.html()).toMatchSnapshot();
     });
 
     test('should respond to state change properly', () => {

@@ -1,28 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`component Composer: should correspond to its snapshot counterpart 1`] = `
-<section
-  className="composer"
->
-  <img
-    src="/images/homer.png"
-  />
-  <form
-    onSubmit={[Function]}
-  >
-    <textarea
-      onChange={[Function]}
-      onKeyPress={[Function]}
-      placeholder="What's on your mind, Homer?"
-      value=""
-    />
-    <input
-      type="submit"
-      value="Post"
-    />
-  </form>
-</section>
-`;
+exports[`component Composer: should correspond to its snapshot counterpart 1`] = `"<section class=\\"composer\\"><img src=\\"/images/homer.png\\"><form><textarea placeholder=\\"What's on your mind, Homer?\\"></textarea><input type=\\"submit\\" value=\\"Post\\"></form></section>"`;
 
 exports[`component Composer: should handle form "submit" event 1`] = `"<section class=\\"composer\\"><img src=\\"/images/homer.png\\"><form><textarea placeholder=\\"What's on your mind, Homer?\\"></textarea><input type=\\"submit\\" value=\\"Post\\"></form></section>"`;
 
