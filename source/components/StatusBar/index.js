@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Transition } from 'react-transition-group';
 import { fromTo } from 'gsap';
+import { Link } from 'react-router-dom';
 
 //Components
 import { withProfile } from 'components/HOC/withProfile';
@@ -19,7 +20,6 @@ export class StatusBar extends Component {
     static propTypes = {
         avatar:               PropTypes.string.isRequired,
         currentUserFirstName: PropTypes.string.isRequired,
-        currentUserLastName:  PropTypes.string.isRequired,
     };
 
     state = {
@@ -53,7 +53,6 @@ export class StatusBar extends Component {
         const {
             avatar,
             currentUserFirstName,
-            currentUserLastName,
         } = this.props;
         const { online } = this.state;
 
@@ -74,12 +73,12 @@ export class StatusBar extends Component {
                         <div>{ statusMessage }</div>
                         <span/>
                     </div>
-                    <button>
+                    <Link to = '/profile'>
                         <img src = { avatar }/>
                         <span>{ currentUserFirstName }</span>
-                            &#160;
-                        <span>{ currentUserLastName }</span>
-                    </button>
+                        &#160;
+                    </Link>
+                    <Link to = '/feed'>Feed</Link>
                 </section>
             </Transition>
         );
