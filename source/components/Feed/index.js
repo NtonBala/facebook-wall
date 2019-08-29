@@ -11,7 +11,6 @@ import {
 import { fromTo } from 'gsap';
 
 // Components
-import { StatusBar } from 'components/StatusBar';
 import { Composer } from 'components/Composer';
 import { Post } from 'components/Post';
 import { Spinner } from 'components/Spinner';
@@ -241,8 +240,6 @@ export class Feed extends Component {
                 </Transition>
 
                 <Spinner isSpinning = { isSpinning }/>
-
-                <StatusBar/>
 
                 <Transition
                     appear
