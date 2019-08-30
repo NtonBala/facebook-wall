@@ -6,6 +6,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 // Components
 import { Feed } from 'components/Feed';
 import { Profile } from 'components/Profile';
+import { Login } from 'components/Login';
 import { Provider } from 'components/HOC/withProfile';
 import { Catcher } from 'components/Catcher';
 import { StatusBar } from 'components/StatusBar';
@@ -21,14 +22,25 @@ const options = {
 
 @hot(module)
 export default class App extends Component {
+    state = {
+        haveAccess: true,
+    }
+
     render() {
+        const { haveAccess } = this.state;
+
         return (
             <Catcher>
 
                 <Provider value = { options }>
-                    <StatusBar />
+                    { haveAccess && <StatusBar /> }
 
                     <Switch>
+                        <Route
+                            component = { Login }
+                            path = '/login'
+                        />
+
                         <Route
                             component = { Feed }
                             path = '/feed'

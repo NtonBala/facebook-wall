@@ -1,5 +1,3 @@
-// Describes posts feed
-
 // Core
 import React, { Component } from 'react';
 import { string } from 'prop-types';

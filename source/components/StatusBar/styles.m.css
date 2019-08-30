@@ -5,7 +5,7 @@
     width: 100%;
     height: 50px;
     border-bottom: #29487d;
-    background-color: #4267b2;
+    background-color: var(--paletteColor6);
 
     & a {
         display: flex;
@@ -14,7 +14,6 @@
         background-color: transparent;
         color: var(--paletteColor12);
         padding: 3px 10px;
-        border: 1px solid var(--paletteColor12);
         border-radius: 3px;
         outline: 0;
         cursor: pointer;

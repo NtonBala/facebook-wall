@@ -1,0 +1,25 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--paletteColor3); /* css variable */
+    min-height: 100vh;
+
+    & a {
+        transform: translateY(-100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--paletteColor6);
+        color: var(--paletteColor12);
+        padding: 3px 10px;
+        border-radius: 3px;
+        outline: 0;
+        cursor: pointer;
+        border: 1px solid var(--paletteColor2);
+        text-decoration: none;
+        min-height: 35px;
+        min-width: 140px;
+        margin: 10px;
+    }
+}
