@@ -1,5 +1,5 @@
 // Core
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { hot } from 'react-hot-loader';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
@@ -26,6 +26,41 @@ export default class App extends Component {
         haveAccess: true,
     }
 
+    _renderPublicRoutes () {
+        return (
+            <Fragment>
+
+                <Route
+                    component = { Login }
+                    path = '/login'
+                />
+
+                <Redirect to = '/login' />
+
+            </Fragment>
+        );
+    }
+
+    _renderPrivateRoutes () {
+        return (
+            <Fragment>
+
+                <Route
+                    component = { Feed }
+                    path = '/feed'
+                />
+
+                <Route
+                    component = { Profile }
+                    path = '/profile'
+                />
+
+                <Redirect to = '/feed' />
+
+            </Fragment>
+        );
+    }
+
     render() {
         const { haveAccess } = this.state;
 
@@ -36,22 +71,10 @@ export default class App extends Component {
                     { haveAccess && <StatusBar /> }
 
                     <Switch>
-                        <Route
-                            component = { Login }
-                            path = '/login'
-                        />
-
-                        <Route
-                            component = { Feed }
-                            path = '/feed'
-                        />
-
-                        <Route
-                            component = { Profile }
-                            path = '/profile'
-                        />
-
-                        <Redirect to = '/feed' />
+                        {haveAccess
+                            ? this._renderPrivateRoutes()
+                            : this._renderPublicRoutes()
+                        }
                     </Switch>
 
                 </Provider>

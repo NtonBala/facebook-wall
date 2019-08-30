@@ -79,6 +79,7 @@ export class StatusBar extends Component {
                         &#160;
                     </Link>
                     <Link to = '/feed'>Feed</Link>
+                    <Link to = '/login'>Logout</Link>
                 </section>
             </Transition>
         );
