@@ -53,6 +53,7 @@ export class StatusBar extends Component {
         const {
             avatar,
             currentUserFirstName,
+            _toggleAccess,
         } = this.props;
         const { online } = this.state;
 
@@ -79,7 +80,7 @@ export class StatusBar extends Component {
                         &#160;
                     </Link>
                     <Link to = '/feed'>Feed</Link>
-                    <Link to = '/login'>Logout</Link>
+                    <button onClick = { _toggleAccess }>Logout</button>
                 </section>
             </Transition>
         );

@@ -20,15 +20,35 @@ const options = {
     avatar,
 };
 
+const haveAccess = !!JSON.parse(localStorage.getItem('haveAccess'));
+
 @hot(module)
 export default class App extends Component {
-    state = {
-        haveAccess: true,
+    constructor() {
+        super();
+
+        this._toggleAccess = () => {
+            this.setState(
+                (state) => {
+                    return {
+                        haveAccess: !state.haveAccess,
+                    };
+                },
+                () => {
+                    localStorage.setItem('haveAccess', JSON.stringify(this.state.haveAccess));
+                },
+            );
+        };
+
+        this.state = {
+            haveAccess:    haveAccess,
+            _toggleAccess: this._toggleAccess,
+        };
     }
 
     _renderPublicRoutes () {
         return (
-            <Fragment>
+            <Switch>
 
                 <Route
                     component = { Login }
@@ -37,13 +57,13 @@ export default class App extends Component {
 
                 <Redirect to = '/login' />
 
-            </Fragment>
+            </Switch>
         );
     }
 
     _renderPrivateRoutes () {
         return (
-            <Fragment>
+            <Switch>
 
                 <Route
                     component = { Feed }
@@ -57,25 +77,29 @@ export default class App extends Component {
 
                 <Redirect to = '/feed' />
 
-            </Fragment>
+            </Switch>
         );
     }
 
     render() {
-        const { haveAccess } = this.state;
+        const { haveAccess, _toggleAccess } = this.state;
+
+        const profileContext = {
+            ...options,
+            haveAccess,
+            _toggleAccess,
+        };
 
         return (
             <Catcher>
 
-                <Provider value = { options }>
+                <Provider value = { profileContext }>
                     { haveAccess && <StatusBar /> }
 
-                    <Switch>
-                        {haveAccess
-                            ? this._renderPrivateRoutes()
-                            : this._renderPublicRoutes()
-                        }
-                    </Switch>
+                    {haveAccess
+                        ? this._renderPrivateRoutes()
+                        : this._renderPublicRoutes()
+                    }
 
                 </Provider>
 
