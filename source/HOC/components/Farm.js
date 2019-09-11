@@ -18,9 +18,18 @@ const Farm = (props) => {
                 <Message>{applesJSX}</Message>
             </div>
 
-            <Button onClick = { props._yieldApples } >Harvest the grain 🍎</Button>
+            <Button onClick = { props._yieldApples }>Harvest the grain 🍎</Button>
         </Container>
     );
 };
 
-export default withState(Farm);
+export default withState({
+    stateName:        'apples',
+    stateValue:       5,
+    stateUpdaterName: '_yieldApples',
+    stateUpdater:     (state) => {
+        return {
+            apples: state.apples + 1,
+        };
+    },
+})(Farm);

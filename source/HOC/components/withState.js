@@ -3,26 +3,30 @@ import React, { Component } from 'react';
 
 import { getDisplayName } from '../helpers';
 
-export const withState = (WrappedComponent) => {
+export const withState = ({ stateName, stateValue, stateUpdaterName, stateUpdater }) => (
+    WrappedComponent,
+) => {
     class WithState extends Component {
         state = {
-            apples: 0,
-        }
+            // Computed properties allow also to write inside [] any JS expression
+            // e.g. 2 + 2 or function call...
+            [ stateName ]: stateValue,
+        };
 
-        _yieldApples = () => {
-            this.setState((state) => {
-                return {
-                    apples: state.apples + 1,
-                };
-            });
-        }
+        [stateUpdaterName] = () => {
+            this.setState(stateUpdater);
+        };
 
         render() {
+            const updatersToForward = {
+                [ stateUpdaterName ]: this[ stateUpdaterName ],
+            };
+
             return (
                 <WrappedComponent
                     { ...this.props }
                     { ...this.state }
-                    _yieldApples = { this._yieldApples }
+                    { ...updatersToForward }
                 />
             );
         }
