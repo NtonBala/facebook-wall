@@ -8,8 +8,8 @@ export class Feed extends Component {
     render() {
         return (
             <section>
-                <Composer/>
-                <Post/>
+                <Composer />
+                <Post />
             </section>
         );
     }
