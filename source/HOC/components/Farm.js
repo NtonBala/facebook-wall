@@ -5,9 +5,21 @@ import { Container, Button, Heading, Message } from '../styled';
 
 import { withState } from './withState';
 
-const Farm = (props) => {
+const stateName = 'apples';
+const stateUpdaterName = '_yieldApples';
+
+export default withState({
+    stateName,
+    stateValue:       5,
+    stateUpdaterName: stateUpdaterName,
+    stateUpdater:     (state) => {
+        return {
+            [ stateName ]: state[ stateName ] + 1,
+        };
+    },
+})((props) => {
     // To open Emoji widget on Mac press 'Cmd + Ctrl + Space'
-    const applesJSX = Array(props.apples).fill('🍎');
+    const applesJSX = Array(props[ stateName ]).fill('🍎');
 
     return (
         <Container>
@@ -18,18 +30,7 @@ const Farm = (props) => {
                 <Message>{applesJSX}</Message>
             </div>
 
-            <Button onClick = { props._yieldApples }>Harvest the grain 🍎</Button>
+            <Button onClick = { props[ stateUpdaterName ] }>Harvest the grain 🍎</Button>
         </Container>
     );
-};
-
-export default withState({
-    stateName:        'apples',
-    stateValue:       5,
-    stateUpdaterName: '_yieldApples',
-    stateUpdater:     (state) => {
-        return {
-            apples: state.apples + 1,
-        };
-    },
-})(Farm);
+});
