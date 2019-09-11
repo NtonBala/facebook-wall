@@ -11,14 +11,14 @@ import Styles from './styles.m.css';
 @withProfile
 export class Login extends Component {
     static propTypes = {
-        _toggleAccess: PropTypes.func.isRequired,
+        _login: PropTypes.func.isRequired,
     }
 
     render() {
         return (
             <section className = { Styles.login }>
 
-                <button onClick = { this.props._toggleAccess }>Login</button>
+                <button onClick = { this.props._login }>Login</button>
 
             </section>
         );

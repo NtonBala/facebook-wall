@@ -1,5 +1,5 @@
 // Core
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
@@ -14,92 +14,87 @@ import { StatusBar } from 'components/StatusBar';
 // Instruments
 import avatar from 'theme/assets/bart';
 
-const options = {
-    currentUserFirstName: 'Антон',
-    currentUserLastName:  'Балашов',
-    avatar,
-};
-
-const haveAccess = !!JSON.parse(localStorage.getItem('haveAccess'));
-
 @hot(module)
 export default class App extends Component {
     constructor() {
         super();
 
-        this._toggleAccess = () => {
-            this.setState(
-                (state) => {
-                    return {
-                        haveAccess: !state.haveAccess,
-                    };
-                },
-                () => {
-                    localStorage.setItem('haveAccess', JSON.stringify(this.state.haveAccess));
-                },
-            );
-        };
-
         this.state = {
-            haveAccess:    haveAccess,
-            _toggleAccess: this._toggleAccess,
+            avatar,
+            currentUserFirstName: 'Антон',
+            currentUserLastName:  'Балашов',
+            isAuthenticated:      false,
+            _logout:              this._logout,
         };
     }
 
-    _renderPublicRoutes () {
-        return (
-            <Switch>
+    componentDidMount() {
+        const isAuthenticated = !!JSON.parse(localStorage.getItem('isAuthenticated'));
 
-                <Route
-                    component = { Login }
-                    path = '/login'
-                />
-
-                <Redirect to = '/login' />
-
-            </Switch>
-        );
+        if (isAuthenticated) {
+            this._login();
+        }
     }
 
-    _renderPrivateRoutes () {
-        return (
-            <Switch>
+    _login = () => {
+        this.setState({
+            isAuthenticated: true,
+        },
+        () => {
+            localStorage.setItem('isAuthenticated', JSON.stringify(this.state.isAuthenticated));
+        });
+    };
 
-                <Route
-                    component = { Feed }
-                    path = '/feed'
-                />
-
-                <Route
-                    component = { Profile }
-                    path = '/profile'
-                />
-
-                <Redirect to = '/feed' />
-
-            </Switch>
-        );
-    }
+    _logout = () => {
+        this.setState({
+            isAuthenticated: false,
+        },
+        () => {
+            localStorage.setItem('isAuthenticated', JSON.stringify(this.state.isAuthenticated));
+        });
+    };
 
     render() {
-        const { haveAccess, _toggleAccess } = this.state;
-
-        const profileContext = {
-            ...options,
-            haveAccess,
-            _toggleAccess,
-        };
+        const { isAuthenticated } = this.state;
 
         return (
             <Catcher>
 
-                <Provider value = { profileContext }>
-                    { haveAccess && <StatusBar /> }
+                <Provider value = { this.state }>
 
-                    {haveAccess
-                        ? this._renderPrivateRoutes()
-                        : this._renderPublicRoutes()
-                    }
+                    { isAuthenticated && <StatusBar /> }
+
+                    <Switch>
+
+                        {!isAuthenticated && (
+                            <Route
+                                path = '/login'
+                                render = { (props) => {
+                                    return (
+                                        <Login
+                                            _login = { this._login }
+                                            { ...props }
+                                        />
+                                    );
+                                } }
+                            />
+                        )}
+
+                        {!isAuthenticated && <Redirect to = '/login' />}
+
+                        <Route
+                            component = { Feed }
+                            path = '/feed'
+                        />
+
+                        <Route
+                            component = { Profile }
+                            path = '/profile'
+                        />
+
+                        <Redirect to = '/feed' />
+
+                    </Switch>
 
                 </Provider>
 

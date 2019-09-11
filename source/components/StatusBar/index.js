@@ -20,6 +20,7 @@ export class StatusBar extends Component {
     static propTypes = {
         avatar:               PropTypes.string.isRequired,
         currentUserFirstName: PropTypes.string.isRequired,
+        _logout:              PropTypes.func.isRequired,
     };
 
     state = {
@@ -53,8 +54,9 @@ export class StatusBar extends Component {
         const {
             avatar,
             currentUserFirstName,
-            _toggleAccess,
+            _logout,
         } = this.props;
+
         const { online } = this.state;
 
         const statusStyle = cx(Styles.status, {
@@ -69,19 +71,26 @@ export class StatusBar extends Component {
                 in
                 timeout = { 1000 }
                 onEnter = { this._animateStatusBarEnter }>
+
                 <section className = { Styles.statusBar }>
+
                     <div className = { statusStyle }>
                         <div>{ statusMessage }</div>
                         <span/>
                     </div>
+
                     <Link to = '/profile'>
                         <img src = { avatar }/>
                         <span>{ currentUserFirstName }</span>
                         &#160;
                     </Link>
+
                     <Link to = '/feed'>Feed</Link>
-                    <button onClick = { _toggleAccess }>Logout</button>
+
+                    <button onClick = { _logout }>Logout</button>
+
                 </section>
+
             </Transition>
         );
     }
